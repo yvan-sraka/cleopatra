@@ -1,19 +1,19 @@
 #!/usr/bin/env stack
 -- stack --install-ghc runghc
 
-import Data.Maybe
 import System.Environment
 import System.Process
 
 main :: IO ()
 main = do
-    args <- getArgs
-    rule args
+    -- TODO Pattern match failure if no args were given
+    command:args <- getArgs
+    command # args
 
-rule :: [String] -> IO ()
+(#) :: String -> [String] -> IO ()
 
-rule ("--help":_) = putStrLn "\
-    \Cleopatra 0.2.0\n\
+"--help" # _ = putStrLn "\
+    \Cleopatra 0.3.0\n\
     \Yvan SRAKA <yvan@sraka.pw>\n\
     \Micro virtual environment for YeAST\n\
     \\n\
@@ -32,37 +32,36 @@ rule ("--help":_) = putStrLn "\
                         \ where ./cleopatra folder is in PATH\n\
     \    unglue           Exit the virtual environment without leaving current\
                         \ opened shell"
+"-h" # _ = "--help" # []
 
-rule ("--version":_) = putStrLn "Cleopatra 0.1.0"
-rule ("-V":_) = rule ("--version":[])
+"--version" # _ = putStrLn "Cleopatra 0.1.0"
+"-V" # _ = "--version" # []
 
-rule ("add":x:xs) = do
+"add" # (x:xs) = do
     _ <- system ("mkdir -p .cleopatra \
              \ && echo \"YEAST_CONTEXT=$(which " ++ x ++ ") yeast \\$@\" \
                  \ > .cleopatra/" ++ x ++ " \
              \ && chmod +x .cleopatra/" ++ x)
     -- TODO putStrLn
-    rule ("add":xs)
-rule ("add":[]) = return ()
+    "add" # xs
+"add" # [] = return ()
 
-rule ("remove":x:xs) = do
+"remove" # (x:xs) = do
     _ <- system ("rm .cleopatra/" ++ x)
     -- TODO putStrLn
-    rule ("remove":xs)
-rule ("remove":[]) = return ()
+    "remove" # xs
+"remove" # [] = return ()
 
-rule ("glue":_) = do
+"glue" # _ = do
     -- TODO putStrLn
     _ <- system "PATH=.cleopatra:$PATH $SHELL"
     return ()
 
-rule ("unglue":_) = do
-    -- TODO : Ctrl+D instruction
+"unglue" # _ = do
+    -- TODO Ctrl+D instruction
     _ <- system "export PATH=${PATH%:.cleopatra/}"
     return ()
 
-rule [] = rule ("--help":[])
-
-rule _ = putStrLn "\x1b[31merror:\x1b[0m \
-    \Found argument 'TODO' which wasn't expected, or isn't valid in this \
-    \context"
+cmd # _ = putStrLn ("\x1b[31merror:\x1b[0m \
+    \Found argument '" ++ cmd ++ "' which wasn't expected, or isn't valid in \
+    \this context")
