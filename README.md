@@ -5,14 +5,12 @@ _Micro virtual environment for [YeAST](https://github.com/yvan-sraka/YeAST)_
 ## What's that?
 
 Cleopatra let you work on a shell where YeAST alias the commons tools you defined.
-
 This is needed when you want to use YeAST inside a complex runtime structure like, typically, a web framework!
 
 YeAST will be called in place of your standard interpreter without the shebang on top of your files.
-
 Interpreters should always take input as first positional argument and write the output on standard output.
 
-e.g. You can aliases python like that:
+**e.g.** You can aliases python like that:
 
 ```shell
 cleopatra add python
@@ -35,11 +33,7 @@ These instructions will get you a copy of the project up and running on your loc
 Get YeAST binary from source:
 
 ```shell
-git clone git@github.com:yvan-sraka/YeAST.git
-cd YeAST
-./configure
-make
-sudo make install
+curl https://raw.githubusercontent.com/yvan-sraka/YeAST/master/install.sh -sSf | sh
 ```
 
 ### Build
@@ -50,12 +44,25 @@ You need an [Haskell build environment](https://www.haskell.org/downloads) on yo
 ghc cleopatra.hs -o cleopatra
 ```
 
+You can also download an executable directly on the [release page](https://github.com/yvan-sraka/cleopatra/releases) of the repository.
+
 ### Usage
 
-```shell
-cleopatra glue
-# That's all!
 ```
+cleopatra <COMMAND>
+```
+
+#### Flags
+
+- `-h`, `--help` Prints help information String
+- `-V`, `--version` Prints version information
+
+#### Commands
+
+- `add <program>` Alias YeAST to be call instead of `<program>` inside virtual environment
+- `remove <program>` Remove alias set for `<program>`
+- `glue` Enter the virtual environment by opening a new shell where `./cleopatra` folder is in `PATH`
+- `unglue` Exit the virtual environment without leaving current opened shell
 
 ## Contributing
 
@@ -70,5 +77,3 @@ See also the list of [contributors](https://github.com/yvan-sraka/cleopatra/grap
 ## License
 
 This project is licensed under the 3rd version of GPL License - see the [LICENSE](https://github.com/yvan-sraka/cleopatra/blob/master/LICENSE) file for details.
-
-
