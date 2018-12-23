@@ -28,19 +28,19 @@ dispatch = [ ("add", add)
 --help, -h
 help :: [String] -> IO ()
 help _ = putStrLn "\
-    \Cleopatra 0.4.0\n\
+    \Cleopatra 0.5.0\n\
     \Yvan SRAKA <yvan@sraka.pw>\n\
     \Micro virtual environment for YeAST\n\
     \\n\
     \USAGE:\n\
-    \    cleopatra <COMMAND>...\n\
+    \    cleopatra <COMMAND>\n\
     \\n\
     \FLAGS:\n\
-    \    -h, --help       Prints help information\nString\
+    \    -h, --help       Prints help information\n\
     \    -V, --version    Prints version information\n\
     \\n\
     \COMMANDS:\n\
-    \    add <program>    Aliase YeAST to be call instead of <program> inside\
+    \    add <program>    Alias YeAST to be call instead of <program> inside\
                         \ virtual environment\n\
     \    remove <program> Remove alias set for <program>\n\
     \    glue             Enter the virtual environment by opening a new shell\
