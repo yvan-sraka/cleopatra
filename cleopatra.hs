@@ -11,36 +11,58 @@ main = do
     rule args
 
 rule :: [String] -> IO ()
-rule (cmd:args)
-    | cmd == "--help" = putStrLn "\
-        \Cleopatra 0.1.0\n\
-        \Yvan SRAKA <yvan@sraka.pw>\n\
-        \Micro virtual environment for YeAST\n\
-        \\n\
-        \USAGE:\n\
-        \    cleopatra <COMMAND>...\n\
-        \\n\
-        \FLAGS:\n\
-        \    -h, --help       Prints help information\n\
-        \    -V, --version    Prints version information"
-    | cmd == "-h" = rule ("--help":[])
-    | cmd == "--version" = putStrLn "Cleopatra 0.1.0"
-    | cmd == "-V" = rule ("--version":[])
-    {- | cmd:args == "add":(x:xs) = do
-        _ <- system ("mkdir -p .cleopatra \
-                 \ && echo \"YEAST_CONTEXT=$(which " ++ x ++ ") yeast \\$@\" \
-                     \ > .cleopatra/" ++ x ++ " \
-                 \ && chmod +x .cleopatra/" ++ x)
-        rule ("add":xs) -}
-    | cmd:args == "add":[] = return ()
-    {- | cmd:args == "remove":(x:xs) = do
-        _ <- system ("rm .cleopatra/" ++ x)
-        rule ("remove":xs) -}
-    | cmd:args == "remove":[] = return ()
-    | cmd == "glue" = do
-        _ <- system "PATH=.cleopatra:$PATH $SHELL"
-        return ()
-    | otherwise = putStrLn "\x1b[31merror:\x1b[0m \
-        \Found command 'TODO' which wasn't expected, or isn't valid in this \
-        \context"
-rule _ = rule ("--help":[])
+
+rule ("--help":_) = putStrLn "\
+    \Cleopatra 0.2.0\n\
+    \Yvan SRAKA <yvan@sraka.pw>\n\
+    \Micro virtual environment for YeAST\n\
+    \\n\
+    \USAGE:\n\
+    \    cleopatra <COMMAND>...\n\
+    \\n\
+    \FLAGS:\n\
+    \    -h, --help       Prints help information\nString\
+    \    -V, --version    Prints version information\n\
+    \\n\
+    \COMMANDS:\n\
+    \    add <program>    Aliase YeAST to be call instead of <program> inside\
+                        \ virtual environment\n\
+    \    remove <program> Remove alias set for <program>\n\
+    \    glue             Enter the virtual environment by opening a new shell\
+                        \ where ./cleopatra folder is in PATH\n\
+    \    unglue           Exit the virtual environment without leaving current\
+                        \ opened shell"
+
+rule ("--version":_) = putStrLn "Cleopatra 0.1.0"
+rule ("-V":_) = rule ("--version":[])
+
+rule ("add":x:xs) = do
+    _ <- system ("mkdir -p .cleopatra \
+             \ && echo \"YEAST_CONTEXT=$(which " ++ x ++ ") yeast \\$@\" \
+                 \ > .cleopatra/" ++ x ++ " \
+             \ && chmod +x .cleopatra/" ++ x)
+    -- TODO putStrLn
+    rule ("add":xs)
+rule ("add":[]) = return ()
+
+rule ("remove":x:xs) = do
+    _ <- system ("rm .cleopatra/" ++ x)
+    -- TODO putStrLn
+    rule ("remove":xs)
+rule ("remove":[]) = return ()
+
+rule ("glue":_) = do
+    -- TODO putStrLn
+    _ <- system "PATH=.cleopatra:$PATH $SHELL"
+    return ()
+
+rule ("unglue":_) = do
+    -- TODO : Ctrl+D instruction
+    _ <- system "export PATH=${PATH%:.cleopatra/}"
+    return ()
+
+rule [] = rule ("--help":[])
+
+rule _ = putStrLn "\x1b[31merror:\x1b[0m \
+    \Found argument 'TODO' which wasn't expected, or isn't valid in this \
+    \context"
