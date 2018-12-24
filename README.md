@@ -48,13 +48,13 @@ You can also download an executable directly on the [release page](https://githu
 
 ### Usage
 
-```
+```shell
 cleopatra <COMMAND>
 ```
 
 #### Flags
 
-- `-h`, `--help` Prints help information String
+- `-h`, `--help` Prints help information
 - `-V`, `--version` Prints version information
 
 #### Commands

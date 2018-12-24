@@ -28,7 +28,7 @@ dispatch = [ ("add", add)
 --help, -h
 help :: [String] -> IO ()
 help _ = putStrLn "\
-    \Cleopatra 0.5.0\n\
+    \Cleopatra 0.5.1\n\
     \Yvan SRAKA <yvan@sraka.pw>\n\
     \Micro virtual environment for YeAST\n\
     \\n\
@@ -50,7 +50,7 @@ help _ = putStrLn "\
 
 --version, -V
 version :: [String] -> IO ()
-version _ = putStrLn "Cleopatra 0.1.0"
+version _ = putStrLn "Cleopatra 0.5.1"
 
 err :: [String] -> IO ()
 err (cmd:args) = putStrLn ("\x1b[31merror:\x1b[0m\
